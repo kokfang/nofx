@@ -1146,3 +1146,34 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 ## ⭐ Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=tinkle-community/nofx&type=Date)](https://star-history.com/#tinkle-community/nofx&Date)
+
+---
+
+## 📈 红利低波 ETF 动态仓位回测 MVP
+
+本仓库附带一个可直接运行的 Python MVP，用于验证红利低波 ETF（默认 `512890`）是否适合做月度动态仓位管理。脚本只依赖 Python 标准库：优先从东方财富公开接口获取 ETF 前复权日线，并用三年价格百分位作为第一版估值代理；如果当前环境无法访问行情接口，会自动切换到明确标注为 `DEMO` 的内置演示数据，确保程序可以立即跑通并打印结果。
+
+> ⚠️ 重要说明：`512890` 成立时间晚于中证红利低波动指数，ETF 本身不能覆盖完整 10 年回测。若要做 10 年或更长周期研究，应改用指数（如 H30269）或其他可追溯指数数据源。
+
+### 安装依赖
+
+```bash
+# 默认脚本无需第三方依赖；此文件仅说明运行环境。
+python -m pip install -r requirements-etf.txt
+```
+
+### 直接运行东方财富数据回测
+
+```bash
+python strategies/dividend_low_vol_etf.py --start 2019-01-01 --plot-file output/512890_nav.svg
+```
+
+### 使用本地 CSV 运行
+
+CSV 至少需要 `date,close` 两列，或 AkShare 导出的 `日期,收盘` 两列：
+
+```bash
+python strategies/dividend_low_vol_etf.py --csv data/512890.csv --no-plot --export-csv output/512890_backtest.csv
+```
+
+脚本会输出买入持有与增强策略的年化收益、最大回撤、夏普比率和最终净值；若指定 `--plot-file`，还会保存无需 matplotlib 的 SVG 净值曲线图。若你不希望使用演示数据兜底，可追加 `--no-demo-fallback`，让实时行情不可用时直接报错。
