@@ -1,4 +1,2 @@
-akshare
-matplotlib
-numpy
-pandas
+# No third-party packages are required for the default ETF backtest script.
+# It uses Python's standard library and Eastmoney's public HTTP endpoint.
