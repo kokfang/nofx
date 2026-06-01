@@ -1146,3 +1146,33 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 ## ⭐ Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=tinkle-community/nofx&type=Date)](https://star-history.com/#tinkle-community/nofx&Date)
+
+---
+
+## 📈 红利低波 ETF 动态仓位回测 MVP
+
+本仓库附带一个可直接运行的 Python MVP，用于验证红利低波 ETF（默认 `512890`）是否适合做月度动态仓位管理。脚本使用 AkShare 获取 ETF 前复权日线行情，并用三年价格百分位作为第一版估值代理；在没有 AkShare 网络环境时，也支持传入本地 CSV。
+
+> ⚠️ 重要说明：`512890` 成立时间晚于中证红利低波动指数，ETF 本身不能覆盖完整 10 年回测。若要做 10 年或更长周期研究，应改用指数（如 H30269）或其他可追溯指数数据源。
+
+### 安装依赖
+
+```bash
+python -m pip install -r requirements-etf.txt
+```
+
+### 直接运行 AkShare 数据回测
+
+```bash
+python strategies/dividend_low_vol_etf.py --start 2019-01-01 --plot-file output/512890_nav.png
+```
+
+### 使用本地 CSV 运行
+
+CSV 至少需要 `date,close` 两列，或 AkShare 导出的 `日期,收盘` 两列：
+
+```bash
+python strategies/dividend_low_vol_etf.py --csv data/512890.csv --no-plot --export-csv output/512890_backtest.csv
+```
+
+脚本会输出买入持有与增强策略的年化收益、最大回撤、夏普比率和最终净值；若指定 `--plot-file`，还会保存净值曲线图。
